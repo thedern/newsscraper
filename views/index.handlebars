@@ -1,9 +1,9 @@
 <div id="header">
     <div class="container">
         <div class="row">
-            <div id="pageTitle" class="col-md-12 text-center mt-5">
-                <h1>NEWS</h1>
-                <h2 class="lead">The Most Important Stories of the Day!</h2>
+            <div id="pageTitle" class="col-md-12 text-right p-5 mt-5">
+                <h1 class="mb-3"><strong>SCIENCE NEWS</strong></h1>
+                <h2>The Most Important Stories of the Day</h2>
             </div>
         </div>
     </div>
@@ -12,8 +12,21 @@
 <div id="content">
     <div class="container">
         <div class="row">
-            <div id="articles" class="col-md-12 text-center mt-5">
-                <h3>Articles</h3>
+            <div id="articles" class="col-md-12 text-center p-3 mt-5">
+                <h2>Articles</h2>
+
+                <ul class="article-list">
+                    {{#each results}}
+                        <li>
+                        <h4 class="text-warning lead p-3"><strong>{{title}}</strong></h4>
+                        <p class="link"><a href="{{link}}" target="_blank">{{link}}</a></p>
+                        <p>{{summary}}</p>
+                        </li>
+                        <br>
+                        <br>
+                        <br>
+                    {{/each}}
+                </ul>
             </div>
         </div>
     </div>

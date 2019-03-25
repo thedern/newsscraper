@@ -23,7 +23,10 @@ router.get('/', (req, resp) => {
         console.log(response.data);
         var $ = cheerio.load(response.data);
 
-        var results = [];
+        // create object to send to handlebars
+        var data = {
+            results: []
+        };
 
         $('div.digg-story__content').each(function(i, element) {
         //$('h2.digg-story__title.entry-title').each(function(i, element) {
@@ -34,24 +37,21 @@ router.get('/', (req, resp) => {
 
             var summary = $(element).find($('div.digg-story__description.entry-content.js--digg-story__description')).text();
 
-            results.push({
+            data.results.push({
                 title: title,
                 link: link,
                 summary: summary
             });
-
-
-
         });
 
         // do stuff with cherrio to render page with handlebars
         // this works, gets me title and link
         // 
-        console.log('results are', results);
-       
+        console.log('results are', data.results);
+        resp.render('index', data);
     });
 
-    resp.render('index');
+    
 });
 
 /* ==========================================================================
