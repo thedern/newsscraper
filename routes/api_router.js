@@ -23,7 +23,12 @@ router.get('/', (req, resp) => {
         console.log(response.data);
         var $ = cheerio.load(response.data);
 
-        var results = [];
+        // create object to send to handlebars
+        // var data = {
+        //     results: []
+        // };
+
+        var results = {};
 
         $('div.digg-story__content').each(function(i, element) {
         //$('h2.digg-story__title.entry-title').each(function(i, element) {
@@ -34,25 +39,36 @@ router.get('/', (req, resp) => {
 
             var summary = $(element).find($('div.digg-story__description.entry-content.js--digg-story__description')).text();
 
-            results.push({
-                title: title,
-                link: link,
-                summary: summary
+            // data.results.push({
+            //     title: title,
+            //     link: link,
+            //     summary: summary
+
+            // save to DB
+            results.title = title;
+            results.link = link;
+            results.summary = summary;
+            
+            // create DB entries
+            db.Article.create(results).then((dbArticle) => {
+                console.log(dbArticle);
+            }).catch((err) =>{
+                console.log(err);
             });
 
+        }); // end data collection
 
+    }); // end axios
 
-        });
+    // Each scraped article should be saved to your application database
 
-        // do stuff with cherrio to render page with handlebars
-        // this works, gets me title and link
-        // 
-        console.log('results are', results);
-       
-    });
+    // save data.results to db
 
-    resp.render('index');
-});
+    // the redirect to articles page should hit the get route for the DB 
+    // res.redirect('/articles') ==> 'app.get("/articles"' which goes to db and renders page // resp.render('index', data);
+
+}); // end get
+
 
 /* ==========================================================================
    POST ROUTES
