@@ -40,10 +40,10 @@ a:visited {
   display: inline-block;
 }
 
-.link:hover {
+.storylink:hover {
   background-color: #333;
   border-radius: 50%;
-  transition: 1s;
+  transition: .5s;
 }
 
 .text-warning:hover {
@@ -51,4 +51,5 @@ a:visited {
   background-color: #d35400;
   color: #fff;
   transition: 0.5s;
+  cursor: pointer;
 }
