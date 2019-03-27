@@ -23,15 +23,9 @@ router.get('/', (req, resp) => {
         console.log(response.data);
         var $ = cheerio.load(response.data);
 
-        // create object to send to handlebars
-        // var data = {
-        //     results: []
-        // };
-
         var results = {};
 
         $('div.digg-story__content').each(function(i, element) {
-        //$('h2.digg-story__title.entry-title').each(function(i, element) {
 
             var title = $(element).find($('h2.digg-story__title.entry-title')).text();
 
@@ -39,17 +33,12 @@ router.get('/', (req, resp) => {
 
             var summary = $(element).find($('div.digg-story__description.entry-content.js--digg-story__description')).text();
 
-            // data.results.push({
-            //     title: title,
-            //     link: link,
-            //     summary: summary
-
-            // save to DB
+            // save results to object
             results.title = title;
             results.link = link;
             results.summary = summary;
             
-            // create DB entries
+            // create DB entries for scraped articles
             db.Article.create(results).then((dbArticle) => {
                 console.log(dbArticle);
             }).catch((err) =>{
@@ -60,14 +49,70 @@ router.get('/', (req, resp) => {
 
     }); // end axios
 
-    // Each scraped article should be saved to your application database
-
-    // save data.results to db
 
     // the redirect to articles page should hit the get route for the DB 
-    // res.redirect('/articles') ==> 'app.get("/articles"' which goes to db and renders page // resp.render('index', data);
+    resp.redirect('/articles'); 
+    
 
 }); // end get
+
+
+router.get('/articles', (res, resp) => {
+
+    // create object to send to handlebars
+    var data = {
+        results: []
+    };
+    // get articles and render page
+    db.Article.find({})
+    .then(function(returnData) {
+        console.log(returnData);
+
+       //  I NEED TO CREATE AN OBJECT AND PUT returnData in it as the key the array is the value... see below
+       //  each title, link, and summary need to be an object which will be pushed to an array.  Each member of
+       //  the array will be an object.  
+       //  data = { results: [ {id title link summary},{id title link summary},{id title link summary},... ]}
+
+        // for each loop, i need to do something like this... kinda... sorta... maybe
+        for (var i = 0; i < returnData.length; i++) {
+
+            //console.log('return data is', returnData[i]);
+            data.results.push(returnData[i])
+
+            // data.results.push
+
+            /*
+            data is already and object... need to push onto array.  // data.results.push(returnData[i])
+            return data is { _id: 5c994204b6c31b2b987663fc,
+                title: '\n\n\nHow Fake Meat Could Save The Planet\n\n\n\n',
+                link:
+                 'https://onezero.medium.com/how-fake-meat-could-save-the-planet-70e23b937e7b',
+                summary:
+                 '\nRealistic alternative meats and dairy products could herald the end of livestock farming  —  and change the way we make food.\n',
+                __v: 0 }
+
+
+                data is { results:
+                [ { _id: 5c994176b8b253092c1fd62b,
+                    title:
+                        '\n\n\nHeartburn Gave My Dad Cancer. What About The Rest Of Us?\n\n\n\n',
+                    link:
+                        'https://undark.org/article/esophageal-cancer-rates-rising-united-states/',
+                    summary:
+                        '\nEsophageal cancer related to chronic acid reflux is among the fastest-growing cancers in the US. Diet and weight are likely culprits, but what else?\n',
+
+                */
+            
+        }
+
+        console.log('data is', data)
+        resp.render('index', data);
+
+    });
+
+    
+
+});
 
 
 /* ==========================================================================
