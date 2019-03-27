@@ -20,37 +20,45 @@ mongoose.connect("mongodb://localhost/newsscraper", { useNewUrlParser: true });
 // home route scraps the target site and load into cheerio
 router.get('/', (req, resp) => {
     axios.get('http://digg.com/channel/science').then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         var $ = cheerio.load(response.data);
 
         var results = {};
 
         $('div.digg-story__content').each(function(i, element) {
 
-            var title = $(element).find($('h2.digg-story__title.entry-title')).text();
+            var aTitle = $(element).find($('h2.digg-story__title.entry-title')).text();
+            //console.log('aTitle is', aTitle);
 
             var link = $(element).find($('h2.digg-story__title.entry-title')).children().attr("href");
 
             var summary = $(element).find($('div.digg-story__description.entry-content.js--digg-story__description')).text();
 
             // save results to object
-            results.title = title;
+            results.title = aTitle;
             results.link = link;
             results.summary = summary;
-            
-            // create DB entries for scraped articles
-            db.Article.create(results).then((dbArticle) => {
-                console.log(dbArticle);
-            }).catch((err) =>{
-                console.log(err);
-            });
 
+            // save article to DB if and only if document with same title does not exist
+            db.Article.countDocuments({title : results.title }, (err, count) => {
+                if (err) {
+                    console.log(err);
+                } else if (count === 0) {
+                    // save to db
+                    db.Article.create(results).then((dbArticle) => {
+                        console.log(dbArticle);
+                    }).catch((err) =>{
+                        console.log(err);
+                    });
+                }
+            });
+            
         }); // end data collection
 
     }); // end axios
 
 
-    // the redirect to articles page should hit the get route for the DB 
+    // the redirect to articles page which populates screen 
     resp.redirect('/articles'); 
     
 
@@ -68,30 +76,14 @@ router.get('/articles', (res, resp) => {
     .then(function(returnData) {
         console.log(returnData);
 
-       //  I NEED TO CREATE AN OBJECT AND PUT returnData in it as the key the array is the value... see below
-       //  each title, link, and summary need to be an object which will be pushed to an array.  Each member of
-       //  the array will be an object.  
-       //  data = { results: [ {id title link summary},{id title link summary},{id title link summary},... ]}
-
-        // for each loop, i need to do something like this... kinda... sorta... maybe
+        // for each data object returned, pushed to array (results) in data object
         for (var i = 0; i < returnData.length; i++) {
 
             //console.log('return data is', returnData[i]);
             data.results.push(returnData[i])
 
-            // data.results.push
-
             /*
-            data is already and object... need to push onto array.  // data.results.push(returnData[i])
-            return data is { _id: 5c994204b6c31b2b987663fc,
-                title: '\n\n\nHow Fake Meat Could Save The Planet\n\n\n\n',
-                link:
-                 'https://onezero.medium.com/how-fake-meat-could-save-the-planet-70e23b937e7b',
-                summary:
-                 '\nRealistic alternative meats and dairy products could herald the end of livestock farming  —  and change the way we make food.\n',
-                __v: 0 }
-
-
+                sample of data returned
                 data is { results:
                 [ { _id: 5c994176b8b253092c1fd62b,
                     title:
@@ -101,11 +93,11 @@ router.get('/articles', (res, resp) => {
                     summary:
                         '\nEsophageal cancer related to chronic acid reflux is among the fastest-growing cancers in the US. Diet and weight are likely culprits, but what else?\n',
 
-                */
+            */
             
         }
 
-        console.log('data is', data)
+        // render page in handlebars sending the data object
         resp.render('index', data);
 
     });
