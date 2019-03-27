@@ -23,6 +23,7 @@ router.get('/', (req, resp) => {
         // console.log(response.data);
         var $ = cheerio.load(response.data);
 
+        // c
         var results = {};
 
         $('div.digg-story__content').each(function(i, element) {
@@ -39,18 +40,12 @@ router.get('/', (req, resp) => {
             results.link = link;
             results.summary = summary;
 
-            // save article to DB if and only if document with same title does not exist
-            db.Article.countDocuments({title : results.title }, (err, count) => {
-                if (err) {
-                    console.log(err);
-                } else if (count === 0) {
-                    // save to db
-                    db.Article.create(results).then((dbArticle) => {
-                        console.log(dbArticle);
-                    }).catch((err) =>{
-                        console.log(err);
-                    });
-                }
+            // save article to DB if and only if document with same title does not exist, unique enforced in schema
+            
+            db.Article.create(results).then((dbArticle) => {
+                console.log(dbArticle);
+            }).catch((err) => {
+                console.log('error is',err);
             });
             
         }); // end data collection
