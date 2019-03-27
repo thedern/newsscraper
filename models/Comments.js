@@ -12,7 +12,7 @@ var CommentSchema = new Schema({
   
   // create model (collection + document schema)
 
-  var Comment = mongoose.model('Comment', CommentSchema);
+  var Comments = mongoose.model('Comments', CommentSchema);
 
   // export for use
-  module.exports = Comment;
+  module.exports = Comments;

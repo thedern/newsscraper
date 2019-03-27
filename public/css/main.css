@@ -27,6 +27,11 @@ body {
   color: #fff;
 }
 
+#comments {
+  background-color: rgba(5, 149, 179, 1);
+  color: #fff;
+  border: 8px double #fff;
+}
 .article-list {
   list-style-type: none;
 }

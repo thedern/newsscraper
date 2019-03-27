@@ -3,7 +3,7 @@
         <div class="row">
             <div id="pageTitle" class="col-md-12 text-right p-5 mt-5">
                 <h1 class="mb-3"><strong>SCIENCE NEWS</strong></h1>
-                <h2>The Most Important Stories of the Day</h2>
+                <h2>The Top Five Science Stories of the Day</h2>
             </div>
         </div>
     </div>
@@ -12,22 +12,28 @@
 <div id="content">
     <div class="container">
         <div class="row">
-            <div id="articles" class="col-md-12 text-center p-3 mt-5">
+            <div id="articles" class="col-md-8 text-center p-3 mt-5">
                 <p class="display-4">ARTICLES</p>
 
                 <ul class="article-list">
                     <!-- loop through results array passed in via data object -->
                     {{#each results}}
-                        <li>
+                        <!-- populate each li with document id from db -->
+                        <li id="{{_id}}">
                         <h4 class="text-warning lead p-3"><strong>{{title}}</strong></h4>
                         <p><a href="{{link}}" target="_blank"><span class="storylink">Article Link</span></a></p>
                         <p>{{summary}}</p>
                         </li>
-                        <br>
-                        <br>
+                        
                         <br>
                     {{/each}}
                 </ul>
+                
+            <!-- end articles --> 
+            </div>
+
+                <div id="comments" class="col-md-4 text-center p-3 mt-5">
+
             </div>
         </div>
     </div>
