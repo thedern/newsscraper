@@ -48,24 +48,16 @@ router.get('/', (req, resp) => {
                 console.log('error is',err);
             });
             
-        }); // end data collection
+        }); // end data srape and save to db
+    }); // end axios request
 
-    }); // end axios
-
-
-    // the redirect to articles page which populates screen 
-    resp.redirect('/articles'); 
-    
-
-}); // end get
-
-
-router.get('/articles', (res, resp) => {
+    /* start page render */
 
     // create object to send to handlebars
     var data = {
         results: []
     };
+
     // get articles and render page
     db.Article.find({})
     .then(function(returnData) {
@@ -87,19 +79,14 @@ router.get('/articles', (res, resp) => {
                         'https://undark.org/article/esophageal-cancer-rates-rising-united-states/',
                     summary:
                         '\nEsophageal cancer related to chronic acid reflux is among the fastest-growing cancers in the US. Diet and weight are likely culprits, but what else?\n',
-
             */
-            
         }
+    });  // end query data
 
-        // render page in handlebars sending the data object
-        resp.render('index', data);
-
-    });
-
-    
-
-});
+    // render page in handlebars sending the data object
+    resp.render('index', data);
+ 
+}); // end get
 
 
 /* ==========================================================================
