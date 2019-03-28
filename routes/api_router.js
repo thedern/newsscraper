@@ -70,19 +70,7 @@ router.get('/', (req, resp) => {
         for (var i = 0; i < returnData.length; i++) {
 
             //console.log('return data is', returnData[i]);
-            data.results.push(returnData[i])
-
-            /*
-                sample of data returned
-                data is { results:
-                [ { _id: 5c994176b8b253092c1fd62b,
-                    title:
-                        '\n\n\nHeartburn Gave My Dad Cancer. What About The Rest Of Us?\n\n\n\n',
-                    link:
-                        'https://undark.org/article/esophageal-cancer-rates-rising-united-states/',
-                    summary:
-                        '\nEsophageal cancer related to chronic acid reflux is among the fastest-growing cancers in the US. Diet and weight are likely culprits, but what else?\n',
-            */
+            data.results.push(returnData[i]);
         }
     });  // end query data
 
@@ -91,37 +79,48 @@ router.get('/', (req, resp) => {
  
 }); // end get
 
-// Route for grabbing a specific Article by id, populate it with it's note
-router.get("/articles/:id", function(req, res) {
-    // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+// Route for grabbing a specific article by id when title (<li> tag) is clicked on in 'aticles' sections
+router.get("/articles/:id", (req, resp) => {
+    // Using the articleID passed in via the appLogic.js ajax request, query the db for the matching document
     db.Article.findOne({ _id: req.params.id })
-      // ..and populate all of the notes associated with it
-      .populate("comments")
-      .then(function(dbArticle) {
-        // If we were able to successfully find an Article with the given id, send it back to the client
-        res.json(dbArticle);
+      // and populate all comments associated with it
+      .populate("comment")
+      .then((dbArticle) => {
+        // pass the results back to the calling ajax request in appLogic.js
+        resp.json(dbArticle);
       })
-      .catch(function(err) {
-        // If an error occurred, send it to the client
-        res.json(err);
+      .catch((err) => {
+        // if error send to ajax call
+        console.log('route error is', err);
+        resp.json(err);
       });
   });
 
 
 /* ==========================================================================
-   POST ROUTES
+   POST/UPDATE ROUTE
    ========================================================================== */
-
-
-
-/* ==========================================================================
-   UPDATE ROUTES
-   ========================================================================== */
-
+router.post("/articles/:id", (req, resp) => {
+    // new comment create... data object posted is already in correct format for insert
+    db.Comments.create(req.body)
+    .then((dbComment) => {
+        // get article with matching id as comment and update comment
+        return db.Article.findOneAndUpdate({_id: req.params.id},{comment: dbComment.id},{new: true});
+    })
+    .then((dbArticle) => {
+        // return data to calling ajax function
+        resp.json(dbArticle);
+    })
+    .catch((err) => {
+        console.log('route error is', err);
+        resp.json(err);
+    })
+});
 
 
 /* ==========================================================================
    DELETE ROUTES
    ========================================================================== */
 
+// export router for application use
 module.exports = router;
