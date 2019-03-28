@@ -17,11 +17,12 @@ $(document).on('click', 'li', function() {
          console.log('returned data is',data);
         $("#comments").append("<p class='mt-3'>" + data.title + "</p>")
         // input to enter a new title
-        $("#comments").append("<input class='m-3' id='titleinput' name='title' placeholder='comment title'>");
+        $("#comments").append("<p m-3'><input class='form-control' id='titleinput' name='title' placeholder='comment title'></p>");
         // textarea to add a new comment body
-        $("#comments").append("<textarea id='bodyinput' name='body' placeholder='comment'></textarea>");
+        $("#comments").append("<p m-3'><textarea class='form-control' rows='5' id='bodyinput' name='body' placeholder='comment'></textarea></p>");
         // button to submit a new comment, with the id of the article saved to it
-        $("#comments").append("<button data-id='"+ data._id + "'id='savecomment'>Save Comment</button>");
+        $("#comments").append("<p class='m-3'><button data-id='"+ data._id + "'id='savecomment'>Save Comment</button></p>");
+        $("#comments").append("<p class='m-3'><button class='del' data-id='"+ data._id + "'id='savecomment'>Delete Comment</button></p>");
 
         // if there's a comment in the article
         if (data.comment) {
