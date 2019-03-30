@@ -1,12 +1,12 @@
 // requires
 const express = require('express');
-const exphbs = require("express-handlebars");
+const exphbs = require('express-handlebars');
 
 // create express app
 const app = express();
 
 // set application port
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 10000;
 
 // set static directory
 app.use(express.static('public'));
@@ -17,8 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // set views engine
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
 
 // import the router mini app from ./routes/api_router
 const apiRouter = require('./routes/api_router');
@@ -28,5 +28,5 @@ app.use(apiRouter);
 
 // Start the server
 app.listen(PORT, function() {
-    console.log("App running on port " + PORT + "!");
+  console.log('App running on port ' + PORT + '!');
 });
