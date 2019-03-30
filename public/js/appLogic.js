@@ -1,14 +1,8 @@
 /* get method for comments section */
 $('#scrapeButton').click(function() {
   console.log('clicked scrape');
-  $.ajax({
-    method: 'GET',
-    url: '/',
-    success: function(result) {
-      // Do something with the result
-      console.log('scraped site');
-    }
-  });
+  $('.article-list').empty();
+  location.reload(true);
 });
 
 // listener for click event on <li> tag
