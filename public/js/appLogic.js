@@ -2,7 +2,7 @@
 $('#scrapeButton').click(function() {
   console.log('clicked scrape');
   $('.article-list').empty();
-  location.reload(true);
+  location.reload();
 });
 
 // listener for click event on <li> tag
