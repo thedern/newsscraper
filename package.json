@@ -1,5 +1,5 @@
 {
-  "name": "scrapeandcomment",
+  "name": "newsscraper",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -8,19 +8,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thedern/scrapeandcomment.git"
+    "url": "git+https://github.com/thedern/newsscraper.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thedern/scrapeandcomment/issues"
+    "url": "https://github.com/thedern/newsscraper/issues"
   },
-  "homepage": "https://github.com/thedern/scrapeandcomment#readme",
+  "homepage": "https://github.com/thedern/newsscraper#readme",
   "dependencies": {
     "axios": "^0.18.0",
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.4",
     "express-handlebars": "^3.0.2",
-    "mongoose": "^5.4.19"
+    "mongoose": "^5.4.20"
   }
 }
