@@ -11,7 +11,9 @@ const router = express.Router();
 const db = require('../models');
 
 // connect to the database
-mongoose.connect('mongodb://localhost/newsscraper', { useNewUrlParser: true });
+var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/newsscraper';
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 /* ==========================================================================
    GET ROUTES
