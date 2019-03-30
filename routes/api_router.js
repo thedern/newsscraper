@@ -3,12 +3,13 @@ const mongoose = require('mongoose');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const express = require('express');
+const path = require('path');
 
 // creat express router
 const router = express.Router();
 
 // require all models
-const db = require('../models');
+const db = require(__dirname + '/../models');
 
 // connect to the database
 var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/newsscraper';
