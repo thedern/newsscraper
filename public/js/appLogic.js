@@ -1,4 +1,15 @@
 /* get method for comments section */
+$('#scrapeButton').click(function() {
+  console.log('clicked scrape');
+  $.ajax({
+    method: 'GET',
+    url: '/',
+    success: function(result) {
+      // Do something with the result
+      console.log('scraped site');
+    }
+  });
+});
 
 // listener for click event on <li> tag
 $(document).on('click', 'li', function() {

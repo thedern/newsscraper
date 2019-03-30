@@ -4,6 +4,7 @@
             <div id="pageTitle" class="col-md-12 text-right p-5 mt-5">
                 <h1 class="mb-3"><strong>SCIENCE NEWS</strong></h1>
                 <h2>The Top Five Science Stories of the Day</h2>
+                <p><button id="scrapeButton" type="button" class="mt-3 btn btn-info">Scrape</button>
             </div>
         </div>
     </div>
@@ -18,21 +19,21 @@
                 <ul class="article-list">
                     <!-- loop through results array passed in via data object -->
                     {{#each results}}
-                        <!-- populate each li with document id from db -->
-                        <li id="{{_id}}">
+                    <!-- populate each li with document id from db -->
+                    <li id="{{_id}}">
                         <h4 class="text-warning lead p-3"><strong>{{title}}</strong></h4>
                         <p>{{summary}}</p>
                         <p><a href="{{link}}" target="_blank"><span class="storylink">Article Link</span></a></p>
-                        </li>
-                        
-                        <br>
+                    </li>
+
+                    <br>
                     {{/each}}
                 </ul>
-                
-            <!-- end articles --> 
+
+                <!-- end articles -->
             </div>
 
-                <div id="comments" class="col-md-4 text-center p-3 mt-5">
+            <div id="comments" class="col-md-4 text-center p-3 mt-5">
 
             </div>
         </div>
