@@ -9,7 +9,7 @@ const path = require('path');
 const router = express.Router();
 
 // require all models
-const db = require(__dirname + '/../models');
+const db = require('../models');
 
 // connect to the database
 var MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/newsscraper';
